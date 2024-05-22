@@ -19,3 +19,7 @@ def signup():
 @mv_routes.route('/filter')
 def filter():
     return render_template('filter.html')
+
+@mv_routes.route('/event')
+def event():
+    return render_template('events.html')

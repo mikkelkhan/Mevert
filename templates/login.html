@@ -40,7 +40,7 @@ label {
 }
 
 input[type="text"],
-input[type="email"],
+input[type="username"],
 input[type="password"] {
   width: calc(100% - 10px);
   padding: 10px;
@@ -67,10 +67,10 @@ button:hover {
 <body>
   <div class="container">
     <h1>Welcome</h1>
-    <form action='/api/email_fetch' method="post">
+    <form action='/api/user_fetch' method="post">
       <div class="form-group">
-        <label for="email"></label>
-        <input type="email" id="email" placeholder="Email" name="email"   required>
+        <label for="username"></label>
+        <input type="text" id="username" placeholder="Username" name="username"   required>
       </div>
       <div class="form-group">
         <label for="password"></label>
