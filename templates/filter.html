@@ -82,9 +82,12 @@ button:focus {
 
 </style>
 <body>
+
+    <br>{{user}}<br>
     <div class="container">
         <h1>Filter To Meet</h1>
-        <form>
+
+        <form action='/api/filter' method="post">
 
             <div class="form-group">
                 <label for="city"></label>
