@@ -24,6 +24,12 @@ def fetch_filter():
     if request.method == 'POST':
         city = request.form.get('city')
         country = request.form.get('country')
+        button1 = {
+
+            'city': city,
+            'country': country,
+            'api_url': '/api/filter'
+        }
         filter_data = cursor.execute(Template(config["Query"]["fetch_all_filter"]).safe_substitute(city=city, country=country))
         filter_all= filter_data.fetchall()
 
@@ -39,6 +45,14 @@ def fetch_filter():
         filter_new_city = random_folter.get('new_city')
         filter_new_Country = random_folter.get('new_Country')
         filter_location = random_folter.get('location')
-        return render_template('home.html',filter_name=filter_name,filter_city=filter_city,filter_Country=filter_Country,filter_new_city=filter_new_city,filter_new_Country=filter_new_Country,filter_location=filter_location)
+        return render_template('home.html',filter_name=filter_name,filter_city=filter_city,filter_Country=filter_Country,filter_new_city=filter_new_city,filter_new_Country=filter_new_Country,filter_location=filter_location,button1=button1)
+
+
+
+
+
+
+
+
 
 
