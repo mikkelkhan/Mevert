@@ -2,6 +2,7 @@ from flask import Flask, request, render_template,Blueprint
 import pyodbc
 from configparser import ConfigParser
 from string import Template
+import random
 
 
 
@@ -23,7 +24,20 @@ def fetch_user():
 
 
     if email_fetch == username and password:
-        return render_template('filter.html',user=username)
+        fetch_data = cursor.execute(Template(config["Query"]["fetch_user_data"]).safe_substitute(username=username))
+        all_data = cursor.fetchall()
+        data = []
+        for row in all_data:
+            data.append({'name': row[0], 'city': row[1], 'country': row[2], 'age': row[3]})
+        # fetch_name = data.get('name')
+        random_folter = random.choice(data)
+        fetch_name = random_folter.get('name')
+        fetch_city = random_folter.get('city')
+        fetch_country = random_folter.get('country')
+        fetch_age = random_folter.get('age')
+        return render_template('profile.html', name=fetch_name, city=fetch_city, country=fetch_country,age=fetch_age,user=username)
+
+
 
     else:
         return render_template('login.html',show="username or password is wrong")

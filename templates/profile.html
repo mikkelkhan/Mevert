@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mevert Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<style>
+    /* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    position: relative;
+    background-color: #1a73e8;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin: -70px auto 20px;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-picture-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-header-info {
+    color: #333;
+}
+
+.artist-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.artist-username {
+    font-size: 1rem;
+    color: #777;
+}
+
+.profile-nav {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #1a73e8;
+}
+
+.profile-main {
+    padding: 20px;
+}
+
+.about-section, .contact-section {
+    margin-bottom: 40px;
+}
+
+.about-section h2, .contact-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.personal-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.info-item {
+    background-color: #f0f2f5;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-label {
+    font-weight: 500;
+}
+
+.info-value {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+}
+
+.edit-btn {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #0f52ba;
+}
+
+.editable-field {
+    position: relative;
+}
+
+.editable-field .edit-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.edit-form {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    text-align: center;
+}
+
+.edit-form
+
+</style>
+<body>
+    <div class="profile-container">
+        <header class="profile-header">
+            <div class="profile-picture">
+                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-picture-img">
+            </div>
+            <div class="profile-header-info">
+                <h1 class="artist-name">{{name}}</h1>
+                <p class="artist-username">{{user}}</p>
+            </div>
+        </header>
+        <nav class="profile-nav">
+            <ul class="nav-links">
+                <li><a href="/filter">Meet People</a></li>
+                <li><a href="/event">Create Event</a></li>
+                <li><a href="#course">Chat</a></li>
+            </ul>
+        </nav>
+        <main class="profile-main">
+            <section id="about" class="about-section">
+                <h2>About Me</h2>
+                <div class="editable-field">
+                    <p id="about-text">Hi bro</p>
+                    <button class="edit-btn" onclick="toggleEdit('about')">Edit</button>
+                </div>
+                <div class="edit-form" id="edit-about-form" style="display: none;">
+                    <form>
+                        <label for="about-input">Edit About Me:</label>
+                        <textarea id="about-input" name="about" rows="4" placeholder="Enter new information" required></textarea>
+                        <button type="submit" onclick="updateAbout(event)">Save</button>
+                    </form>
+                </div>
+            </section>
+            <section id="contact" class="contact-section">
+                <h2>Personal Information</h2>
+                <div class="personal-info">
+                    <div class="info-item">
+                        <span class="info-label">Age:</span>
+                        <span class="info-value" id="dob">{{age}}</span>
+                        <button class="edit-btn" onclick="toggleEdit('dob')">Edit</button>
+                    </div>
+                    <div class="info-item" id="edit-dob-form" style="display: none;">
+                        <form>
+                            <label for="dob-input">New AGE:</label>
+                            <input type="text" id="dob-input" name="dob" placeholder="Enter new Age" required>
+                            <button type="submit" onclick="updateDOB(event)">Save</button>
+                        </form>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">City:</span>
+                        <span class="info-value" id="location-text">{{city}}</span>
+                        <button class="edit-btn" onclick="toggleEdit('location')">Edit</button>
+                    </div>
+                    <div class="edit-form" id="edit-location-form" style="display: none;">
+                        <form>
+                            <label for="location-input">Edit City:</label>
+                            <input type="text" id="location-input" name="location" placeholder="Enter new City" required>
+                            <button type="submit" onclick="updateLocation(event)">Save</button>
+                        </form>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Country:</span>
+                        <span class="info-value" id="country-text">{{country}}</span>
+                        <button class="edit-btn" onclick="toggleEdit('country')">Edit</button>
+                    </div>
+                    <div class="edit-form" id="edit-country-form" style="display: none;">
+                        <form>
+                            <label for="country-input">Edit Country:</label>
+                            <input type="text" id="country-input" name="country" placeholder="Enter new country" required>
+                            <button type="submit" onclick="updateCountry(event)">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="profile-footer">
+            <p>&copy; 2024 MEVERT. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleEdit(field) {
+            const editForm = document.getElementById(`edit-${field}-form`);
+            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+
+            if (field === 'about') {
+                const aboutText = document.getElementById('about-text').textContent;
+                document.getElementById('about-input').value = aboutText.trim();
+            } else if (field === 'dob') {
+                const dobText = document.getElementById('dob').textContent;
+                document.getElementById('dob-input').value = dobText.trim();
+            } else if (field === 'city') {
+                const locationText = document.getElementById('location-text').textContent;
+                document.getElementById('location-input').value = locationText.trim();
+
+            } else if (field === 'country') {
+                const countryText = document.getElementById('country-text').textContent;
+                document.getElementById('country-input').value = countryText.trim();
+            }
+        }
+
+        function updateAbout(event) {
+            event.preventDefault();
+            const newAbout = document.getElementById('about-input').value;
+            document.getElementById('about-text').textContent = newAbout;
+            toggleEdit('about');
+        }
+
+        function updateDOB(event) {
+            event.preventDefault();
+            const newDOB = document.getElementById('dob-input').value;
+            document.getElementById('dob').textContent = newDOB;
+            toggleEdit('dob');
+        }
+
+        function updateLocation(event) {
+            event.preventDefault();
+            const newLocation = document.getElementById('location-input').value;
+            document.getElementById('location-text').textContent = newLocation;
+            toggleEdit('location');
+        }
+        function updateCountry(event) {
+            event.preventDefault();
+            const newCountry = document.getElementById('country-input').value;
+            document.getElementById('country-text').textContent = newCountry;
+            toggleEdit('country');
+        }
+    </script>
+</body>
+</html>
