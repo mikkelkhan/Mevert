@@ -2,11 +2,14 @@ from flask import Flask, request, render_template,Blueprint
 import pyodbc
 from configparser import ConfigParser
 from string import Template
+from flask import session
 import random
 
 
 
 mv_login = Blueprint("login",__name__)
+
+
 
 config = ConfigParser()
 config.read("config.ini")
@@ -35,6 +38,7 @@ def fetch_user():
         fetch_city = random_folter.get('city')
         fetch_country = random_folter.get('country')
         fetch_age = random_folter.get('age')
+        session['username'] = username
         return render_template('profile.html', name=fetch_name, city=fetch_city, country=fetch_country,age=fetch_age,user=username)
 
 

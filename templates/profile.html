@@ -182,8 +182,10 @@ body {
         </header>
         <nav class="profile-nav">
             <ul class="nav-links">
+                <li><a href="/edit_profile">Edit Profile</a></li>
                 <li><a href="/filter">Meet People</a></li>
                 <li><a href="/event">Create Event</a></li>
+                <li><a href="/request">Requests</a></li>
                 <li><a href="#course">Chat</a></li>
             </ul>
         </nav>
@@ -192,15 +194,9 @@ body {
                 <h2>About Me</h2>
                 <div class="editable-field">
                     <p id="about-text">Hi bro</p>
-                    <button class="edit-btn" onclick="toggleEdit('about')">Edit</button>
+
                 </div>
-                <div class="edit-form" id="edit-about-form" style="display: none;">
-                    <form>
-                        <label for="about-input">Edit About Me:</label>
-                        <textarea id="about-input" name="about" rows="4" placeholder="Enter new information" required></textarea>
-                        <button type="submit" onclick="updateAbout(event)">Save</button>
-                    </form>
-                </div>
+
             </section>
             <section id="contact" class="contact-section">
                 <h2>Personal Information</h2>
@@ -208,94 +204,29 @@ body {
                     <div class="info-item">
                         <span class="info-label">Age:</span>
                         <span class="info-value" id="dob">{{age}}</span>
-                        <button class="edit-btn" onclick="toggleEdit('dob')">Edit</button>
+
                     </div>
-                    <div class="info-item" id="edit-dob-form" style="display: none;">
-                        <form>
-                            <label for="dob-input">New AGE:</label>
-                            <input type="text" id="dob-input" name="dob" placeholder="Enter new Age" required>
-                            <button type="submit" onclick="updateDOB(event)">Save</button>
-                        </form>
-                    </div>
+
                     <div class="info-item">
                         <span class="info-label">City:</span>
                         <span class="info-value" id="location-text">{{city}}</span>
-                        <button class="edit-btn" onclick="toggleEdit('location')">Edit</button>
+
                     </div>
-                    <div class="edit-form" id="edit-location-form" style="display: none;">
-                        <form>
-                            <label for="location-input">Edit City:</label>
-                            <input type="text" id="location-input" name="location" placeholder="Enter new City" required>
-                            <button type="submit" onclick="updateLocation(event)">Save</button>
-                        </form>
-                    </div>
+
                     <div class="info-item">
                         <span class="info-label">Country:</span>
                         <span class="info-value" id="country-text">{{country}}</span>
-                        <button class="edit-btn" onclick="toggleEdit('country')">Edit</button>
+
                     </div>
-                    <div class="edit-form" id="edit-country-form" style="display: none;">
-                        <form>
-                            <label for="country-input">Edit Country:</label>
-                            <input type="text" id="country-input" name="country" placeholder="Enter new country" required>
-                            <button type="submit" onclick="updateCountry(event)">Save</button>
-                        </form>
+
+
                     </div>
-                </div>
+
             </section>
         </main>
         <footer class="profile-footer">
             <p>&copy; 2024 MEVERT. All rights reserved.</p>
         </footer>
     </div>
-
-    <script>
-        function toggleEdit(field) {
-            const editForm = document.getElementById(`edit-${field}-form`);
-            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-
-            if (field === 'about') {
-                const aboutText = document.getElementById('about-text').textContent;
-                document.getElementById('about-input').value = aboutText.trim();
-            } else if (field === 'dob') {
-                const dobText = document.getElementById('dob').textContent;
-                document.getElementById('dob-input').value = dobText.trim();
-            } else if (field === 'city') {
-                const locationText = document.getElementById('location-text').textContent;
-                document.getElementById('location-input').value = locationText.trim();
-
-            } else if (field === 'country') {
-                const countryText = document.getElementById('country-text').textContent;
-                document.getElementById('country-input').value = countryText.trim();
-            }
-        }
-
-        function updateAbout(event) {
-            event.preventDefault();
-            const newAbout = document.getElementById('about-input').value;
-            document.getElementById('about-text').textContent = newAbout;
-            toggleEdit('about');
-        }
-
-        function updateDOB(event) {
-            event.preventDefault();
-            const newDOB = document.getElementById('dob-input').value;
-            document.getElementById('dob').textContent = newDOB;
-            toggleEdit('dob');
-        }
-
-        function updateLocation(event) {
-            event.preventDefault();
-            const newLocation = document.getElementById('location-input').value;
-            document.getElementById('location-text').textContent = newLocation;
-            toggleEdit('location');
-        }
-        function updateCountry(event) {
-            event.preventDefault();
-            const newCountry = document.getElementById('country-input').value;
-            document.getElementById('country-text').textContent = newCountry;
-            toggleEdit('country');
-        }
-    </script>
 </body>
 </html>

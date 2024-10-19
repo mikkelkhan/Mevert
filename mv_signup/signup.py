@@ -21,12 +21,13 @@ def signup_data():
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
+        age = request.form.get('age')
         city = request.form.get('city')
         state = request.form.get('state')
         country = request.form.get('country')
         pin = request.form.get('pin')
         if password == confirm_password:
-            add_data = cursor.execute(Template(config["Query"]["add_data"]).safe_substitute(name=name, username=username, email=email, password=password, city=city, state=state, country=country, pin=pin))
+            add_data = cursor.execute(Template(config["Query"]["add_data"]).safe_substitute(name=name, username=username, email=email, password=password,age=age, city=city, state=state, country=country, pin=pin))
             cnxn.commit()
             return render_template('signup.html',red="account is created")
         else:

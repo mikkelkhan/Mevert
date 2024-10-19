@@ -5,131 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mevert</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+
+      body {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f9f9f9;
+          font-family: 'Arial', sans-serif;
+      }
+
+      .container {
+          position: relative;
+          width: 90%;
+          max-width: 400px;
+          height: 80%;
+          max-height: 600px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: #fff;
+          border-radius: 15px;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .card img {
+          width: 100%;
+          height: 60%;
+          object-fit: cover;
+      }
+
+      .card .info {
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          text-align: center;
+          height: 40%;
+      }
+
+      .card .info h2 {
+          margin: 10px 0 5px;
+          color: #333;
+          font-size: 24px;
+      }
+
+      .card .info p {
+          margin: 0;
+          color: #777;
+          font-size: 16px;
+      }
+
+      .buttons {
+          display: flex;
+          gap: 10px;
+          margin-top: 10px;
+      }
+
+      button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s ease;
+      }
+
+      .decline {
+          background-color: #ff4d4d;
+          color: #fff;
+      }
+
+      .decline:hover {
+          background-color: #ff1a1a;
+      }
+
+      .send {
+          background-color: #4CAF50;
+          color: #fff;
+      }
+
+      .send:hover {
+          background-color: #45a049;
+      }
+
+      .card:nth-child(2) {
+          transform: scale(0.95) translateY(-20px);
+          opacity: 0.9;
+      }
+
+      .card:nth-child(3) {
+          transform: scale(0.9) translateY(-40px);
+          opacity: 0.8;
+      }
+
+  </style>
 </head>
-<style>
-    body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
-  font-family: 'Arial', sans-serif;
-}
-
-.container {
-  position: relative;
-  width: 90%;
-  max-width: 400px;
-  height: 80%;
-  max-height: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.card img {
-  width: 100%;
-  height: 60%;
-  object-fit: cover;
-}
-
-.card .info {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-  height: 40%;
-}
-
-.card .info h2 {
-  margin: 10px 0 5px;
-  color: #333;
-  font-size: 24px;
-}
-
-.card .info p {
-  margin: 0;
-  color: #777;
-  font-size: 16px;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.decline {
-  background-color: #ff4d4d;
-  color: #fff;
-}
-
-.decline:hover {
-  background-color: #ff1a1a;
-}
-
-.send {
-  background-color: #4CAF50;
-  color: #fff;
-}
-
-.send:hover {
-  background-color: #45a049;
-}
-
-.card:nth-child(2) {
-  transform: scale(0.95) translateY(-20px);
-  opacity: 0.9;
-}
-
-.card:nth-child(3) {
-  transform: scale(0.9) translateY(-40px);
-  opacity: 0.8;
-}
-
-</style>
 <body>
+  <br>{{user}}<br>
   <div class="container">
-    <div class="card">
+    <div class="card" id="card">
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLxQPrM7AekvK6-fhXKKsarx849O7r1JrfYnRL7DwbkBI_KzMwXnAjJd78EdBg9B1tpV7yGucLJwJINl3BFVldp5dhnA9hqMlfYAGilYRRICdEXo8Uaf41DASH_D6Ib9qSEZGyU1gho1g/s640/C2CgTOmXAAIvXLI.jpg" alt="Profile">
       <div class="info">
-        <h2>Mikkel, 26</h2>
-        <p>Gaya, IND</p>
-          <p>Planing to go</p>
-          <p>kamra club,chd</p>
+        <h2 id="filter_name">{{filter_name}}</h2>
+        <p id="filter_city">{{filter_city}}, {{filter_Country}}</p>
+        <p id="filter_location">{{filter_location}}</p>
+        <p id="filter_new_city">{{filter_new_city}}, {{filter_new_Country}}</p>
         <div class="buttons">
-          <button class="decline">Decline</button>
-          <button class="send">Send</button>
+          <button id="button1" class="decline"
+                  onclick="buttonClick('{{ button1.city }}', '{{ button1.country }}', '{{ button1.api_url }}')">Decline</button>
+          <button id="button2" class="send" onclick="buttonClick">Send</button>
         </div>
       </div>
     </div>
-
   </div>
+  <script>
+    function buttonClick(city, country, apiUrl) {
+        var formData = new FormData();
+        formData.append('city', city);
+        formData.append('country', country);
+
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())  // Expecting HTML response
+        .then(html => {
+            // Parse the HTML response and update the card content
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+
+            // Extract new content from the returned HTML
+            document.getElementById('filter_name').textContent = doc.querySelector('#filter_name').textContent;
+            document.getElementById('filter_city').textContent = doc.querySelector('#filter_city').textContent;
+            document.getElementById('filter_location').textContent = doc.querySelector('#filter_location').textContent;
+            document.getElementById('filter_new_city').textContent = doc.querySelector('#filter_new_city').textContent;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+  </script>
 </body>
 </html>

@@ -23,3 +23,16 @@ def filter():
 @mv_routes.route('/event')
 def event():
     return render_template('events.html')
+
+@mv_routes.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+@mv_routes.route('/edit_profile')
+def edit_profile():
+    return render_template('edit_profile.html')
+
+
+@mv_routes.route('/request')
+def request():
+    return render_template('request.html')
