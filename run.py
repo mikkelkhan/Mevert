@@ -4,7 +4,8 @@ from mv_routes.routes import mv_routes
 from mv_login.login import mv_login
 from mv_events.event import mv_events
 from mv_events.filter import mv_filters
-from mv_profile.profile import mv_profile
+from mv_profile.profile import mv_profile_main
+from mv_profile.edit_profile import mv_edit_profile
 
 app = Flask(__name__)
 
@@ -14,7 +15,8 @@ app.register_blueprint(mv_routes)
 app.register_blueprint(mv_login)
 app.register_blueprint(mv_events)
 app.register_blueprint(mv_filters)
-app.register_blueprint(mv_profile)
+app.register_blueprint(mv_profile_main)
+app.register_blueprint(mv_edit_profile)
 
 
 

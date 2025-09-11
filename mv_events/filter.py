@@ -1,9 +1,9 @@
 import random
-from flask import Flask, request, render_template,Blueprint
+from flask import Flask, request, render_template,Blueprint,jsonify
 import pyodbc
 from configparser import ConfigParser
 from string import Template
-
+from flask import session
 
 
 
@@ -47,15 +47,27 @@ def fetch_filter():
             filter_new_city = random_folter.get('new_city')
             filter_new_Country = random_folter.get('new_Country')
             filter_location = random_folter.get('location')
+            receiver_username = random_folter.get('username')
             return render_template('home.html', filter_name=filter_name, filter_city=filter_city,
                                    filter_Country=filter_Country, filter_new_city=filter_new_city,
                                    filter_new_Country=filter_new_Country, filter_location=filter_location,
-                                   button1=button1)
+                                   button1=button1,receiver_username=receiver_username)
 
 
 
 
 
+@mv_filters.route('/api/send_button_user_details',methods=["POST"])
+def send_button_user_details():
+    username = session.get('username')
+    receiver = request.form.get('username')
+    messaage = f"Hi {receiver} ,Can i join?"
+    send_request = cursor.execute(
+        "INSERT INTO Matches (username, receiver, messaage) VALUES (?, ?, ?)",
+        (username, receiver, messaage)
+    )
+    cnxn.commit()
+    return jsonify({"status": "success", "msg": f"✅ Request sent successfully to {receiver}"})
 
 
 

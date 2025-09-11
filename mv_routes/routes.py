@@ -28,11 +28,31 @@ def event():
 def profile():
     return render_template('profile.html')
 
-@mv_routes.route('/edit_profile')
-def edit_profile():
-    return render_template('edit_profile.html')
+@mv_routes.route('/edit_profile_about')
+def edit_profile_about():
+    return render_template('edit_profile_about.html')
+
+@mv_routes.route('/edit_profile_age')
+def edit_profile_age():
+    return render_template('edit_profile_age.html')
+
+@mv_routes.route('/edit_profile_city')
+def edit_profile_city():
+    return render_template('edit_profile_city.html')
+
+
+@mv_routes.route('/edit_profile_country')
+def edit_profile_country():
+    return render_template('edit_profile_country.html')
+
 
 
 @mv_routes.route('/request')
 def request():
     return render_template('request.html')
+
+
+@mv_routes.route('/upload_pic')
+def upload_pic():
+    return render_template('upload_pic.html')
+

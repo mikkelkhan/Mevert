@@ -40,20 +40,24 @@ body {
 }
 
 .profile-picture {
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin: -70px auto 20px;
-    width: 120px;
-    height: 120px;
+    width: 100%;     /* ✅ Fill the container fully */
+    height: 100%;
+    object-fit: cover; /* ✅ Maintain aspect ratio without stretching */
+    border-radius: 50%; /* ✅ Match outer circle for perfect round shape */
+    border: none;
 }
 
 .profile-picture-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 114px;
+    height: 114px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 3px solid white;
+    position: absolute;   /* Ensures positioning within profile-header */
+    top: 1px;
+    left: 20px;
 }
+
 
 .profile-header-info {
     color: #333;
@@ -156,7 +160,11 @@ body {
     top: 5px;
     right: 5px;
 }
-
+.editable-fieldx {
+    position: absolute;
+    top: 90px;
+    left: 140px;
+}
 .edit-form {
     padding: 10px;
     background-color: #fff;
@@ -173,16 +181,24 @@ body {
     <div class="profile-container">
         <header class="profile-header">
             <div class="profile-picture">
-                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-picture-img">
+                <img src="data:image/png;base64,{{ profilePicture }}" alt="Profile Picture" class="profile-picture-img">
+
             </div>
+
             <div class="profile-header-info">
                 <h1 class="artist-name">{{name}}</h1>
                 <p class="artist-username">{{user}}</p>
             </div>
+            <div class="editable-fieldx">
+
+                        <a href="/upload_pic" onclick="document.getElementById('uploadInput').click();" style="font-size: 12px;">Upload Pic</a>
+
+                    </div>
         </header>
+
         <nav class="profile-nav">
             <ul class="nav-links">
-                <li><a href="/edit_profile">Edit Profile</a></li>
+
                 <li><a href="/filter">Meet People</a></li>
                 <li><a href="/event">Create Event</a></li>
                 <li><a href="/request">Requests</a></li>
@@ -193,7 +209,9 @@ body {
             <section id="about" class="about-section">
                 <h2>About Me</h2>
                 <div class="editable-field">
-                    <p id="about-text">Hi bro</p>
+
+                    <p id="about-text">{{about}}</p>
+                    <a href="/edit_profile_about" style="font-size: 12px;">edit</a>
 
                 </div>
 
@@ -202,20 +220,26 @@ body {
                 <h2>Personal Information</h2>
                 <div class="personal-info">
                     <div class="info-item">
+                        <div class="editable-field">
                         <span class="info-label">Age:</span>
                         <span class="info-value" id="dob">{{age}}</span>
+                            <a href="/edit_profile_age" style="font-size: 12px;">edit</a> </div>
 
                     </div>
 
                     <div class="info-item">
+                        <div class="editable-field">
                         <span class="info-label">City:</span>
                         <span class="info-value" id="location-text">{{city}}</span>
+                            <a href="/edit_profile_city" style="font-size: 12px;">edit</a> </div>
 
                     </div>
 
                     <div class="info-item">
+                        <div class="editable-field">
                         <span class="info-label">Country:</span>
                         <span class="info-value" id="country-text">{{country}}</span>
+                            <a href="/edit_profile_country" style="font-size: 12px;">edit</a> </div>
 
                     </div>
 

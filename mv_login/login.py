@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from string import Template
 from flask import session
 import random
-
+import base64
 
 
 mv_login = Blueprint("login",__name__)
@@ -31,15 +31,18 @@ def fetch_user():
         all_data = cursor.fetchall()
         data = []
         for row in all_data:
-            data.append({'name': row[0], 'city': row[1], 'country': row[2], 'age': row[3]})
+            data.append({'name': row[0], 'city': row[1], 'country': row[2], 'age': row[3],'about': row[4], 'profilePicture': row[5]})
         # fetch_name = data.get('name')
         random_folter = random.choice(data)
         fetch_name = random_folter.get('name')
         fetch_city = random_folter.get('city')
         fetch_country = random_folter.get('country')
         fetch_age = random_folter.get('age')
+        fetch_about = random_folter.get('about')
+        fetch_image = random_folter.get('profilePicture')
+        fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
         session['username'] = username
-        return render_template('profile.html', name=fetch_name, city=fetch_city, country=fetch_country,age=fetch_age,user=username)
+        return render_template('profile.html', name=fetch_name, city=fetch_city, country=fetch_country,age=fetch_age,user=username,about=fetch_about,profilePicture=fetch_pro)
 
 
 
