@@ -32,7 +32,10 @@ def fetch_profile():
     fetch_age = random_folter.get('age')
     fetch_about = random_folter.get('about')
     fetch_image = random_folter.get('profilePicture')
-    fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
+    if fetch_image:
+        fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
+    else:
+        fetch_pro = None
     return render_template('profile.html',name=fetch_name,city=fetch_city,country=fetch_country,age=fetch_age,user=username,about=fetch_about,profilePicture=fetch_pro)
 
 

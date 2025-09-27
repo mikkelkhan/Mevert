@@ -4,7 +4,7 @@ import pyodbc
 from configparser import ConfigParser
 from string import Template
 from flask import session
-
+import base64
 
 
 
@@ -38,7 +38,7 @@ def fetch_filter():
             data = []
             for row in filter_all:
                 data.append({'username': row[0], 'name': row[1], 'city': row[2], 'Country': row[3], 'new_city': row[5],
-                             'new_Country': row[6], 'location': row[7]})
+                             'new_Country': row[6], 'location': row[7], 'profilePicture': row[8]})
 
             random_folter = random.choice(data)
             filter_name = random_folter.get('name')
@@ -48,10 +48,15 @@ def fetch_filter():
             filter_new_Country = random_folter.get('new_Country')
             filter_location = random_folter.get('location')
             receiver_username = random_folter.get('username')
+            fetch_image = random_folter.get('profilePicture')
+            if fetch_image:
+                fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
+            else:
+                fetch_pro = None
             return render_template('home.html', filter_name=filter_name, filter_city=filter_city,
                                    filter_Country=filter_Country, filter_new_city=filter_new_city,
                                    filter_new_Country=filter_new_Country, filter_location=filter_location,
-                                   button1=button1,receiver_username=receiver_username)
+                                   button1=button1,receiver_username=receiver_username,profilePicture=fetch_pro)
 
 
 
