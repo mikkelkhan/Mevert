@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mevert Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+.profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.profile-header {
+    position: relative;
+    background-color: #1a73e8;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+.profile-picture-img {
+    width: 114px;
+    height: 114px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 3px solid white;
+    position: absolute;   /* Ensures positioning within profile-header */
+    top: 1px;
+    left: 20px;
+}
+.profile-header-info { color: #fff; }
+.artist-name { font-size: 1.8rem; font-weight: 600; margin-bottom: 5px; }
+.artist-username { font-size: 1rem; color: #f0f2f5; }
+.profile-nav { background-color: #fff; border-bottom: 1px solid #eee; }
+.nav-links { display: flex; justify-content: space-around; padding: 10px 0; }
+.nav-links li { list-style: none; }
+.nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: all 0.3s ease; }
+.nav-links a:hover { color: #1a73e8; }
+.profile-main { padding: 20px; }
+.about-section, .contact-section { margin-bottom: 40px; }
+.about-section h2, .contact-section h2 { font-size: 1.5rem; margin-bottom: 10px; }
+.personal-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px; }
+.info-item { background-color: #f0f2f5; padding: 10px; border-radius: 10px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+.info-label { font-weight: 500; }
+.info-value { display: block; margin-top: 5px; color: #777; }
+</style>
+<body>
+    <div class="profile-container">
+        <header class="profile-header">
+            <img src="data:image/png;base64,{{ profilePicture }}" alt="Profile Picture" class="profile-picture-img">
+            <div class="profile-header-info">
+                <h1 class="artist-name">{{ name }}</h1>
+                <p class="artist-username">{{ user }}</p>
+            </div>
+        </header>
+
+        <nav class="profile-nav">
+            <ul class="nav-links">
+                <li><a href="/filter">Meet People</a></li>
+                <li><a href="/event">Create Event</a></li>
+                <li><a href="/request">Requests</a></li>
+                <li><a href="#course">Chat</a></li>
+            </ul>
+        </nav>
+
+        <main class="profile-main">
+            <section id="about" class="about-section">
+                <h2>About Me</h2>
+                <p id="about-text">{{ about }}</p>
+            </section>
+
+            <section id="contact" class="contact-section">
+                <h2>Personal Information</h2>
+                <div class="personal-info">
+                    <div class="info-item">
+                        <span class="info-label">Age:</span>
+                        <span class="info-value">{{ age }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">City:</span>
+                        <span class="info-value">{{ city }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Country:</span>
+                        <span class="info-value">{{ country }}</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="profile-footer">
+            <p>&copy; 2025 MEVERT. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

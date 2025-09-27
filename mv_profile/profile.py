@@ -18,9 +18,13 @@ cursor = cnxn.cursor()
 @mv_profile_main.route('/api/profile',methods=["POST"])
 def fetch_profile():
     username = session.get('username')
+    if not username:
+        return {"error": "Unauthorized"}, 401
     #username = "mikkellord"
     fetch_data = cursor.execute(Template(config["Query"]["fetch_user_data"]).safe_substitute(username=username))
     all_data = cursor.fetchall()
+    if not all_data:
+        return {"error": "User not found"}, 404
     data = []
     for row in all_data:
         data.append({'name': row[0], 'city': row[1], 'country': row[2], 'age': row[3],'about': row[4],'profilePicture': row[5]})
@@ -40,6 +44,7 @@ def fetch_profile():
 
 
 
+
 @mv_profile_main.route('/api/profile/uploadPic',methods=["POST"])
 def upload_pic():
     username = session.get('username')
@@ -55,5 +60,27 @@ def upload_pic():
     return render_template('upload_pic.html', red="Picture is uploaded now")
 
 
+@mv_profile_main.route('/profile/<string:other_username>', methods=["GET"])
+def other_profile(other_username):
+    fetch_data = cursor.execute(
+        Template(config["Query"]["fetch_user_data"]).safe_substitute(username=other_username)
+    )
+    user_data = cursor.fetchone()
+    if not user_data:
+        return "User not found", 404
+
+    fetch_name, fetch_city, fetch_country, fetch_age, fetch_about, fetch_image = user_data
+    fetch_pro = base64.b64encode(fetch_image).decode('utf-8') if fetch_image else None
+
+    return render_template(
+        'Profile_other.html',
+        name=fetch_name,
+        city=fetch_city,
+        country=fetch_country,
+        age=fetch_age,
+        user=other_username,
+        about=fetch_about,
+        profilePicture=fetch_pro
+    )
 
 

@@ -56,3 +56,6 @@ def request():
 def upload_pic():
     return render_template('upload_pic.html')
 
+@mv_routes.route('/other_profile')
+def other_profile():
+    return render_template('Profile_other.html')
