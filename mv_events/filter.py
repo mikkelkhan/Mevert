@@ -66,10 +66,11 @@ def fetch_filter():
 def send_button_user_details():
     username = session.get('username')
     receiver = request.form.get('username')
-    messaage = f"Hi {receiver} ,Can i join?"
+    messaage = f"Hey {receiver} ,what’s up?"
+    status = "2"
     send_request = cursor.execute(
-        "INSERT INTO Matches (username, receiver, messaage) VALUES (?, ?, ?)",
-        (username, receiver, messaage)
+        "INSERT INTO Matches (username, receiver, messaage, status) VALUES (?, ?, ?, ?)",
+        (username, receiver, messaage, status)
     )
     cnxn.commit()
     return jsonify({"status": "success", "msg": f"✅ Request sent successfully to {receiver}"})

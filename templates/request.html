@@ -1,11 +1,121 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>reeeeeeeeee</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Match Requests</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f6fa;
+      margin:0;
+      padding:20px;
+    }
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+      color:#333;
+    }
+    .list{
+      max-width:500px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .card{
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:8px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .meta a{
+      text-decoration:none;
+      color:#222;
+    }
+    .meta p{
+      margin:4px 0 0;
+      font-size:13px;
+      color:#666;
+    }
+    .actions{
+      display:flex;
+      gap:6px;
+    }
+    .actions button{
+      padding:6px 10px;
+      border:none;
+      border-radius:4px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .accept{background:#4caf50;color:white;}
+    .decline{background:#f44336;color:white;}
+  </style>
 </head>
 <body>
-<form id="home" action="/api/profile" method="post" style="display:none;"></form>
-<a href="#" onclick="document.getElementById('home').submit();">HOME</a>
+  <h1>Match Requests</h1>
+
+  <!-- Home link -->
+  <form id="home" action="/api/profile" method="post"></form>
+  <a href="#" onclick="document.getElementById('home').submit();">HOME</a>
+
+  <!-- Match requests list -->
+  <div id="list" class="list"></div>
+
+<script>
+  const listEl = document.getElementById('list');
+
+  async function loadMatches() {
+    try {
+      const res = await fetch('/api/matches');
+      if (!res.ok) throw new Error('Failed to fetch matches');
+      const data = await res.json();
+
+      if(data.length === 0){
+        listEl.innerHTML = '<p style="text-align:center;color:#777">No requests.</p>';
+        return;
+      }
+
+      listEl.innerHTML = '';
+
+      data.forEach(r => {
+        const d = document.createElement('div');
+        d.className = 'card';
+        d.innerHTML = `
+          <div class="meta">
+            <a href="${r.profile_url}">
+              <h3>${r.name}, ${r.age}</h3>
+            </a>
+            <p>${r.loc || ''}</p>
+          </div>
+          <div class="actions">
+            <button class="accept">Accept</button>
+            <button class="decline">Decline</button>
+          </div>
+        `;
+
+        d.querySelector('.accept').onclick = () => {
+          alert(`Messaging with ${r.name}...`);
+        };
+
+        d.querySelector('.decline').onclick = () => {
+          d.remove();
+        };
+
+        listEl.appendChild(d);
+      });
+
+    } catch(err) {
+      console.error(err);
+      listEl.innerHTML = '<p style="text-align:center;color:red">Failed to load matches.</p>';
+    }
+  }
+
+  loadMatches();
+</script>
 </body>
 </html>
