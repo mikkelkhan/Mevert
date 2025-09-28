@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+from db import close_db_connection
 from mv_signup.signup import mv_signup
 from mv_routes.routes import mv_routes
 from mv_login.login import mv_login
@@ -18,6 +19,8 @@ app.register_blueprint(mv_filters)
 app.register_blueprint(mv_profile_main)
 app.register_blueprint(mv_edit_profile)
 app.register_blueprint(mv_profile_matches)
+app.teardown_appcontext(close_db_connection)
+
 
 
 
