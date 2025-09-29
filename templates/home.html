@@ -129,6 +129,7 @@
       <p id="filter_city">{{filter_city}}, {{filter_Country}}</p>
       <p id="filter_location">{{filter_location}}</p>
       <p id="filter_new_city">{{filter_new_city}}, {{filter_new_Country}}</p>
+      <input type="hidden" id="receiver-username" value="{{ receiver_username }}">
 
       <div class="buttons">
         <!-- Decline button -->
@@ -172,6 +173,14 @@
           document.getElementById('filter_new_city').textContent = doc.querySelector('#filter_new_city').textContent;
           document.querySelector('.profile-picture-img').src =
             doc.querySelector('.profile-picture-img').src;
+
+          let newProfileLink = doc.querySelector(".info a").getAttribute("href");
+          document.querySelector(".info a").setAttribute("href", newProfileLink);
+
+          let newReceiver = doc.querySelector("#receiver-username").value;
+          document.getElementById("receiver-username").value = newReceiver;
+
+
           // Clear old success message
           document.getElementById('send-message').textContent = "";
       })
@@ -179,7 +188,8 @@
   }
 
   // Send button -> send request to receiver
-  function sendRequest(receiver) {
+  function sendRequest() {
+      let receiver = document.getElementById("receiver-username").value;
       var formData = new FormData();
       formData.append('username', receiver);
 
