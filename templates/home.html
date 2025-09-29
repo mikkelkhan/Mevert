@@ -170,7 +170,8 @@
           document.getElementById('filter_city').textContent = doc.querySelector('#filter_city').textContent;
           document.getElementById('filter_location').textContent = doc.querySelector('#filter_location').textContent;
           document.getElementById('filter_new_city').textContent = doc.querySelector('#filter_new_city').textContent;
-
+          document.querySelector('.profile-picture-img').src =
+            doc.querySelector('.profile-picture-img').src;
           // Clear old success message
           document.getElementById('send-message').textContent = "";
       })

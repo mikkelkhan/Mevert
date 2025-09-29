@@ -1,21 +1,22 @@
-from flask import Flask, request, render_template,Blueprint
+from flask import Flask, request, render_template, Blueprint
 import pyodbc
 from configparser import ConfigParser
 from string import Template
 
-mv_signup = Blueprint("signup",__name__)
-
+mv_signup = Blueprint("signup", __name__)
 
 
 config = ConfigParser()
 config.read("config.ini")
 
+
 cnxn = pyodbc.connect(config["MSSQL"]["connect"])
 cursor = cnxn.cursor()
 
-@mv_signup.route('/api/signupdata',methods=["POST"])
+@mv_signup.route('/api/signupdata', methods=["POST"])
 def signup_data():
     if request.method == 'POST':
+        # Collect form data
         name = request.form.get('name')
         username = request.form.get('username')
         email = request.form.get('email')
@@ -26,10 +27,22 @@ def signup_data():
         state = request.form.get('state')
         country = request.form.get('country')
         pin = request.form.get('pin')
-        if password == confirm_password:
-            add_data = cursor.execute(Template(config["Query"]["add_data"]).safe_substitute(name=name, username=username, email=email, password=password,age=age, city=city, state=state, country=country, pin=pin))
-            cnxn.commit()
-            return render_template('signup.html',red="account is created")
-        else:
-            return render_template('signup.html',red="password is wrong")
+
+
+        if password != confirm_password:
+            return render_template('signup.html', red="Passwords do not match")
+
+
+        cursor.execute("SELECT COUNT(*) FROM signup WHERE username = ?", (username,))
+        user_exists = cursor.fetchone()[0]
+
+        if user_exists:
+            return render_template('signup.html', red="Username already taken")
+
+        cursor.execute(Template(config["Query"]["add_data"]).safe_substitute(name=name, username=username, email=email,
+                                                                  password=password, age=age, city=city, state=state,
+                                                                  country=country, pin=pin))
+        cnxn.commit()
+
+        return render_template('signup.html', red="Account created successfully")
 
