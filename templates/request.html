@@ -67,55 +67,72 @@
   <div id="list" class="list"></div>
 
 <script>
-  const listEl = document.getElementById('list');
+const listEl = document.getElementById('list');
 
-  async function loadMatches() {
-    try {
-      const res = await fetch('/api/matches');
-      if (!res.ok) throw new Error('Failed to fetch matches');
-      const data = await res.json();
+async function loadMatches() {
+  try {
+    const res = await fetch('/api/matches');
+    if (!res.ok) throw new Error('Failed to fetch matches');
+    const data = await res.json();
 
-      if(data.length === 0){
-        listEl.innerHTML = '<p style="text-align:center;color:#777">No requests.</p>';
-        return;
-      }
-
-      listEl.innerHTML = '';
-
-      data.forEach(r => {
-        const d = document.createElement('div');
-        d.className = 'card';
-        d.innerHTML = `
-          <div class="meta">
-            <a href="${r.profile_url}">
-              <h3>${r.name}, ${r.age}</h3>
-            </a>
-            <p>${r.loc || ''}</p>
-          </div>
-          <div class="actions">
-            <button class="accept">Accept</button>
-            <button class="decline">Decline</button>
-          </div>
-        `;
-
-        d.querySelector('.accept').onclick = () => {
-          alert(`Messaging with ${r.name}...`);
-        };
-
-        d.querySelector('.decline').onclick = () => {
-          d.remove();
-        };
-
-        listEl.appendChild(d);
-      });
-
-    } catch(err) {
-      console.error(err);
-      listEl.innerHTML = '<p style="text-align:center;color:red">Failed to load matches.</p>';
+    if(data.length === 0){
+      listEl.innerHTML = '<p style="text-align:center;color:#777">No requests.</p>';
+      return;
     }
-  }
 
-  loadMatches();
+    listEl.innerHTML = '';
+
+    data.forEach(r => {
+      const d = document.createElement('div');
+      d.className = 'card';
+      d.innerHTML = `
+        <div class="meta">
+          <a href="${r.profile_url}">
+            <h3>${r.name}, ${r.age}</h3>
+          </a>
+          <p>${r.loc || ''}</p>
+        </div>
+        <div class="actions">
+          <button class="accept">Accept</button>
+          <button class="decline">Decline</button>
+        </div>
+      `;
+
+      // Accept button
+      d.querySelector('.accept').onclick = () => {
+        alert(`Messaging with ${r.name}...`);
+      };
+
+      // Decline button
+      d.querySelector('.decline').onclick = async () => {
+  try {
+    const res = await fetch(`/api/decline_matches/${r.username}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!res.ok) throw new Error('Failed to decline match');
+
+    // Remove the card from the page
+    d.remove();
+
+    console.log(`${r.name} declined.`);
+  } catch(err) {
+    console.error(err);
+    alert('Could not decline match. Try again.');
+  }
+};
+
+      listEl.appendChild(d);
+    });
+
+  } catch(err) {
+    console.error(err);
+    listEl.innerHTML = '<p style="text-align:center;color:red">Failed to load matches.</p>';
+  }
+}
+
+loadMatches();
 </script>
 </body>
 </html>
