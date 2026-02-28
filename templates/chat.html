@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  <style>
+    body { font-family: Arial; margin:0; }
+    .container { display:flex; height:100vh; }
+
+    .users {
+      width:30%;
+      border-right:1px solid #ccc;
+      overflow-y:auto;
+      background:#f5f5f5;
+    }
+
+    .user {
+      padding:12px;
+      cursor:pointer;
+      border-bottom:1px solid #ddd;
+    }
+
+    .user:hover {
+      background:#e6e6e6;
+    }
+
+    .chat-area {
+      width:70%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .chat-header {
+      padding:15px;
+      border-bottom:1px solid #ccc;
+      font-weight:bold;
+      background:#fafafa;
+    }
+
+    .messages {
+      flex:1;
+      padding:15px;
+      overflow-y:auto;
+      background:white;
+    }
+
+    .message {
+      margin-bottom:10px;
+    }
+
+    .input-box {
+      display:flex;
+      padding:10px;
+      border-top:1px solid #ccc;
+    }
+
+    .input-box input {
+      flex:1;
+      padding:8px;
+    }
+
+    .input-box button {
+      padding:8px 15px;
+      margin-left:5px;
+      background:#4caf50;
+      color:white;
+      border:none;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LEFT SIDE -->
+  <div class="users" id="userList"></div>
+
+  <!-- RIGHT SIDE -->
+  <div class="chat-area">
+    <div class="chat-header" style="display:flex; align-items:center; gap:15px;">
+    <a href="/api/profile" style="text-decoration:none; font-size:20px;">⬅</a>
+    <span id="chatHeader">Select a user</span>
+    </div>
+    <div class="messages" id="messages"></div>
+
+    <div class="input-box">
+      <input id="msgInput" placeholder="Type message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io();
+let currentMatchId = null;
+
+const userList = document.getElementById("userList");
+const messagesEl = document.getElementById("messages");
+const chatHeader = document.getElementById("chatHeader");
+
+async function loadUsers() {
+  const res = await fetch('/api/chat_users');
+  const data = await res.json();
+
+  userList.innerHTML = '';
+
+  data.forEach(u => {
+    const div = document.createElement("div");
+    div.className = "user";
+    div.innerText = u.other_user;
+
+    div.onclick = () => openChat(u.match_id, u.other_user);
+
+    userList.appendChild(div);
+  });
+}
+
+async function openChat(matchId, username) {
+  currentMatchId = matchId;
+  chatHeader.innerText = username;
+
+  socket.emit("join", `match_${matchId}`);
+
+  loadMessages(matchId);
+}
+
+async function loadMessages(matchId) {
+  const res = await fetch(`/api/chat_messages/${matchId}`);
+  const data = await res.json();
+
+  messagesEl.innerHTML = '';
+
+  data.forEach(msg => {
+    addMessage(msg.sender_username, msg.message);
+  });
+
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function addMessage(sender, message) {
+  const div = document.createElement("div");
+  div.className = "message";
+  div.innerText = sender + ": " + message;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+socket.on("new_message", (msg) => {
+  if(msg.match_id === currentMatchId){
+    addMessage(msg.sender_username, msg.message);
+  }
+});
+
+document.getElementById("sendBtn").onclick = () => {
+  const text = document.getElementById("msgInput").value.trim();
+  if(!text || !currentMatchId) return;
+
+  socket.emit("send_message", {
+    match_id: currentMatchId,
+    message: text
+  });
+
+  document.getElementById("msgInput").value = "";
+};
+
+loadUsers();
+</script>
+
+</body>
+</html>

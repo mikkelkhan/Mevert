@@ -15,7 +15,7 @@ cnxn = pyodbc.connect(config["MSSQL"]["connect"])
 cursor = cnxn.cursor()
 
 
-@mv_profile_main.route('/api/profile',methods=["POST"])
+@mv_profile_main.route('/api/profile',methods=['GET', 'POST'])
 def fetch_profile():
     username = session.get('username')
     if not username:

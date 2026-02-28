@@ -99,9 +99,26 @@ async function loadMatches() {
       `;
 
       // Accept button
-      d.querySelector('.accept').onclick = () => {
-        alert(`Messaging with ${r.name}...`);
-      };
+      d.querySelector('.accept').onclick = async () => {
+  try {
+    const res = await fetch(`/api/accept_matches/${r.username}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!res.ok) throw new Error('Failed to accept match');
+
+    // Remove the card from pending list
+    d.remove();
+
+    // Optional: small success feedback
+    alert(`${r.name} matched successfully!`);
+
+  } catch(err) {
+    console.error(err);
+    alert('Could not accept match. Try again.');
+  }
+};
 
       // Decline button
       d.querySelector('.decline').onclick = async () => {

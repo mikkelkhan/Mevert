@@ -59,3 +59,7 @@ def upload_pic():
 @mv_routes.route('/other_profile')
 def other_profile():
     return render_template('Profile_other.html')
+
+@mv_routes.route('/chat')
+def chat():
+    return render_template('chat.html')
