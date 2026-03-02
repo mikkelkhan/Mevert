@@ -56,7 +56,7 @@ def fetch_user():
         selected = random.choice(data)
         fetch_pro = None
         if selected.get('profilePicture'):
-            fetch_pro = base64.b64encode(selected['profilePicture']).decode('utf-8')
+            fetch_pro = selected['profilePicture']
 
         # Save session
         session['username'] = username

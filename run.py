@@ -11,9 +11,20 @@ from mv_profile.edit_profile import mv_edit_profile
 from mv_profile.matches import mv_profile_matches
 from mv_chats.chat import mv_chats
 from extensions import socketio
+
+import cloudinary
+import os
+
 app = Flask(__name__)
 
 app.secret_key =  b'_5#y2L"F4Q8z\n\xec]/'
+
+cloudinary.config(
+    cloud_name= "dhqgvahme",
+    api_key="425469328355628",
+    api_secret="y6lOC2NUYXjTkyEgnbtyJLH5VvU"
+)
+
 
 socketio.init_app(app)
 

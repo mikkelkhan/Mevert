@@ -122,7 +122,7 @@
 <div class="container">
   <div class="card" id="card">
 
-    <img src="data:image/png;base64,{{ profilePicture }}" alt="Profile Picture" class="profile-picture-img">
+    <img src="{{ profilePicture }}" alt="Profile Picture" class="profile-picture-img">
     <div class="info">
       <a href="{{ url_for('profile.other_profile', other_username=receiver_username) }}" style="text-decoration:none; color:inherit;">
       <h2 id="filter_name">{{filter_name}}</h2></a>

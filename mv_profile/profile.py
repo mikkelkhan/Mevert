@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template,Blueprint
 from werkzeug.utils import secure_filename
+import cloudinary.uploader
 import pyodbc
 from configparser import ConfigParser
 from string import Template
@@ -37,7 +38,7 @@ def fetch_profile():
     fetch_about = random_folter.get('about')
     fetch_image = random_folter.get('profilePicture')
     if fetch_image:
-        fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
+        fetch_pro = fetch_image
     else:
         fetch_pro = None
     return render_template('profile.html',name=fetch_name,city=fetch_city,country=fetch_country,age=fetch_age,user=username,about=fetch_about,profilePicture=fetch_pro)
@@ -48,17 +49,28 @@ def fetch_profile():
 @mv_profile_main.route('/api/profile/uploadPic',methods=["POST"])
 def upload_pic():
     username = session.get('username')
-    profilePicture = request.files['profilePicture']
-    #profilePicture = "C:\Users\kashi\OneDrive\Pictures\Camera Roll"
-    if not profilePicture:
-        return render_template('upload_pic.html', red="No Picture is there")
-    image_data = profilePicture.read()
-    filename = secure_filename(profilePicture.filename)
-    mimetype = profilePicture.mimetype
-    add_pic = cursor.execute(config["Query"]["upload_pic"],(username, image_data))
-    cnxn.commit()
-    return render_template('upload_pic.html', red="Picture is uploaded now")
 
+    if not username:
+        return render_template('upload_pic.html', red="Not logged in")
+
+    profilePicture = request.files.get('profilePicture')
+
+    if not profilePicture:
+        return render_template('upload_pic.html', red="No picture uploaded")
+
+    # Upload to Cloudinary
+    upload_result = cloudinary.uploader.upload(profilePicture)
+
+    image_url = upload_result["secure_url"]
+
+    # Store only image URL in DB
+    cursor.execute(
+        config["Query"]["upload_pic"],
+        (username, image_url)
+    )
+    cnxn.commit()
+
+    return render_template('upload_pic.html', red="Picture uploaded successfully")
 
 @mv_profile_main.route('/profile/<string:other_username>', methods=["GET"])
 def other_profile(other_username):
@@ -70,7 +82,7 @@ def other_profile(other_username):
         return "User not found", 404
 
     fetch_name, fetch_city, fetch_country, fetch_age, fetch_about, fetch_image = user_data
-    fetch_pro = base64.b64encode(fetch_image).decode('utf-8') if fetch_image else None
+    fetch_pro = fetch_image if fetch_image else None
 
     return render_template(
         'Profile_other.html',

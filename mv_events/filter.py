@@ -50,7 +50,7 @@ def fetch_filter():
             receiver_username = random_folter.get('username')
             fetch_image = random_folter.get('profilePicture')
             if fetch_image:
-                fetch_pro = base64.b64encode(fetch_image).decode('utf-8')
+                fetch_pro = fetch_image
             else:
                 fetch_pro = None
             return render_template('home.html', filter_name=filter_name, filter_city=filter_city,
