@@ -5,15 +5,19 @@ from configparser import ConfigParser
 from string import Template
 from flask import session
 import base64
-
+import psycopg2
+import os
+from dotenv import load_dotenv
 
 
 
 mv_filters = Blueprint("filter",__name__)
 config = ConfigParser()
 config.read("config.ini")
+load_dotenv()
 
-cnxn = pyodbc.connect(config["MSSQL"]["connect"])
+Database_connect = os.getenv("Database_connect")
+cnxn = psycopg2.connect(Database_connect)
 cursor = cnxn.cursor()
 
 
@@ -30,8 +34,9 @@ def fetch_filter():
             'country': country,
             'api_url': '/api/filter'
         }
-        filter_data = cursor.execute(Template(config["Query"]["fetch_all_filter"]).safe_substitute(city=city, country=country))
-        filter_all= filter_data.fetchall()
+        filter_data = cursor.execute(Template(config["Query"]["fetch_all_filter"]).safe_substitute(city=city.strip().lower(), country=country.strip().lower()))
+        filter_all= cursor.fetchall()
+        print(filter_all)
         if filter_all == []:
             return render_template('filter.html',not_show="No one is going this city events")
         else:
@@ -69,7 +74,7 @@ def send_button_user_details():
     messaage = f"Hey {receiver} ,what’s up?"
     status = "2"
     send_request = cursor.execute(
-        "INSERT INTO Matches (username, receiver, messaage, status) VALUES (?, ?, ?, ?)",
+        "INSERT INTO matches (username, receiver, messaage, status) VALUES (%s, %s, %s, %s)",
         (username, receiver, messaage, status)
     )
     cnxn.commit()

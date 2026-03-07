@@ -5,12 +5,19 @@ from string import Template
 from flask import session
 import logging
 from datetime import datetime
+import psycopg2
+import os
+from dotenv import load_dotenv
 
 mv_profile_matches = Blueprint("matches",__name__)
 config = ConfigParser()
 config.read("config.ini")
+
+load_dotenv()
+
+Database_connect = os.getenv("Database_connect")
 def get_connection():
-    return pyodbc.connect(config["MSSQL"]["connect"])
+    return psycopg2.connect(Database_connect)
 
 
 
@@ -74,7 +81,7 @@ def accept_matches(other_username):
         query = """
         UPDATE Matches
         SET status = '1'
-        WHERE username = ? AND receiver = ?
+        WHERE username = %s AND receiver = %s
         """
 
         cursor.execute(query, (other_username, username))
@@ -82,7 +89,7 @@ def accept_matches(other_username):
 
         cursor.execute("""
                     SELECT id FROM Matches
-                    WHERE username = ? AND receiver = ?
+                    WHERE username = %s AND receiver = %s
                 """, (other_username, username))
 
         row = cursor.fetchone()
@@ -95,7 +102,7 @@ def accept_matches(other_username):
 
         cursor.execute("""
                     INSERT INTO chat_messages (match_id, sender_username, message, created_at)
-                    VALUES (?, ?, ?, ?)
+                    VALUES (%s, %s, %s, %s)
                 """, (match_id, "Mevert", "You are now matched! Say hello!", datetime.utcnow()))
 
 
