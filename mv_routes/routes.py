@@ -8,7 +8,7 @@ mv_routes = Blueprint("routes",__name__)
 def home():
     return render_template('home.html')
 
-@mv_routes.route('/login')
+@mv_routes.route('/')
 def login():
     return render_template('login.html')
 
