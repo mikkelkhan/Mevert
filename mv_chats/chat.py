@@ -5,12 +5,20 @@ from configparser import ConfigParser
 from string import Template
 from flask import session
 from datetime import datetime
+import psycopg2
+import os
+from dotenv import load_dotenv
+
 
 mv_chats = Blueprint("chats",__name__,url_prefix="/api")
 config = ConfigParser()
 config.read("config.ini")
+
+load_dotenv()
+
+Database_connect = os.getenv("Database_connect")
 def get_connection():
-    return pyodbc.connect(config["MSSQL"]["connect"])
+    return psycopg2.connect(Database_connect)
 
 from extensions import socketio
 @socketio.on('join')
@@ -35,7 +43,7 @@ def handle_send_message(data):
 
         cursor.execute("""
             INSERT INTO chat_messages (match_id, sender_username, message, created_at)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """, (match_id, sender_username, message, datetime.utcnow()))
 
         cnxn.commit()
@@ -66,12 +74,12 @@ def get_chat_users():
         SELECT DISTINCT 
             m.id,
             CASE 
-                WHEN m.username = ? THEN m.receiver
+                WHEN m.username = %s THEN m.receiver
                 ELSE m.username
             END AS other_user
         FROM Matches m
         JOIN chat_messages c ON c.match_id = m.id
-        WHERE (m.username = ? OR m.receiver = ?)
+        WHERE (m.username = %s OR m.receiver = %s)
         AND m.status = 1
         ORDER BY m.id DESC
     """, (username, username, username))
@@ -98,7 +106,7 @@ def get_messages(match_id):
     cursor.execute("""
         SELECT sender_username, message, created_at
         FROM chat_messages
-        WHERE match_id = ?
+        WHERE match_id = %s
         ORDER BY created_at ASC
     """, (match_id,))
 

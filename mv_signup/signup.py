@@ -2,15 +2,19 @@ from flask import Flask, request, render_template, Blueprint
 import pyodbc
 from configparser import ConfigParser
 from string import Template
-
+import psycopg2
+import os
+from dotenv import load_dotenv
 mv_signup = Blueprint("signup", __name__)
 
 
 config = ConfigParser()
 config.read("config.ini")
 
+load_dotenv()
 
-cnxn = pyodbc.connect(config["MSSQL"]["connect"])
+Database_connect = os.getenv("Database_connect")
+cnxn = psycopg2.connect(Database_connect)
 cursor = cnxn.cursor()
 
 @mv_signup.route('/api/signupdata', methods=["POST"])
@@ -33,7 +37,7 @@ def signup_data():
             return render_template('signup.html', red="Passwords do not match")
 
 
-        cursor.execute("SELECT COUNT(*) FROM signup WHERE username = ?", (username,))
+        cursor.execute("SELECT COUNT(*) FROM signup WHERE username = %s", (username,))
         user_exists = cursor.fetchone()[0]
 
         if user_exists:

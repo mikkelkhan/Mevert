@@ -3,13 +3,17 @@ import pyodbc
 from configparser import ConfigParser
 from string import Template
 from flask import session
-
+import psycopg2
+import os
+from dotenv import load_dotenv
 
 mv_edit_profile = Blueprint("edit_profile",__name__)
 config = ConfigParser()
 config.read("config.ini")
+load_dotenv()
 
-cnxn = pyodbc.connect(config["MSSQL"]["connect"])
+Database_connect = os.getenv("Database_connect")
+cnxn = psycopg2.connect(Database_connect)
 cursor = cnxn.cursor()
 
 

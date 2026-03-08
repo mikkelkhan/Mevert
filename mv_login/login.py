@@ -4,6 +4,9 @@ from configparser import ConfigParser
 import random
 from string import Template
 import base64
+import psycopg2
+import os
+from dotenv import load_dotenv
 
 mv_login = Blueprint("login", __name__)
 
@@ -12,7 +15,10 @@ config = ConfigParser()
 config.read("config.ini")
 
 # Connection string
-cnxn = pyodbc.connect(config["MSSQL"]["connect"])
+load_dotenv()
+
+Database_connect = os.getenv("Database_connect")
+cnxn = psycopg2.connect(Database_connect)
 
 @mv_login.route('/api/user_fetch', methods=["POST"])
 def fetch_user():
@@ -74,5 +80,6 @@ def fetch_user():
 
     except Exception as e:
         # Log error in production instead of returning
+        print("ERROR:", e)
         return render_template('login.html', show="An error occurred, please try again later")
 

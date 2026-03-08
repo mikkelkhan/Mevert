@@ -14,15 +14,18 @@ from extensions import socketio
 
 import cloudinary
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key =  b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = os.getenv("secret_key")
 
 cloudinary.config(
-    cloud_name= "dhqgvahme",
-    api_key="425469328355628",
-    api_secret="y6lOC2NUYXjTkyEgnbtyJLH5VvU"
+    cloud_name= os.getenv("cloud_name"),
+    api_key=os.getenv("api_key"),
+    api_secret=os.getenv("api_secret")
 )
 
 
