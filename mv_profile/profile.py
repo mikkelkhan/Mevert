@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,Blueprint
 from werkzeug.utils import secure_filename
 import cloudinary.uploader
-import pyodbc
+
 from configparser import ConfigParser
 from string import Template
 from flask import session

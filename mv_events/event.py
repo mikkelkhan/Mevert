@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template,Blueprint
-import pyodbc
+
 from configparser import ConfigParser
 from string import Template
 from flask import session
