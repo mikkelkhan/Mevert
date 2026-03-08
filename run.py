@@ -14,7 +14,8 @@ from extensions import socketio
 import cloudinary
 import os
 from dotenv import load_dotenv
-
+import eventlet
+eventlet.monkey_patch()
 load_dotenv()
 
 app = Flask(__name__)
