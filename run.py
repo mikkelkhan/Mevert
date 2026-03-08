@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-from db import close_db_connection
 from flask_socketio import SocketIO
 from mv_signup.signup import mv_signup
 from mv_routes.routes import mv_routes
@@ -40,7 +39,7 @@ app.register_blueprint(mv_profile_main)
 app.register_blueprint(mv_edit_profile)
 app.register_blueprint(mv_profile_matches)
 app.register_blueprint(mv_chats)
-app.teardown_appcontext(close_db_connection)
+
 
 
 
