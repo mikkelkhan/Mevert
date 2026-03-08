@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask, request, render_template
 from flask_socketio import SocketIO
 from mv_signup.signup import mv_signup
@@ -14,8 +16,7 @@ from extensions import socketio
 import cloudinary
 import os
 from dotenv import load_dotenv
-import eventlet
-eventlet.monkey_patch()
+
 load_dotenv()
 
 app = Flask(__name__)
