@@ -63,3 +63,7 @@ def other_profile():
 @mv_routes.route('/chat')
 def chat():
     return render_template('chat.html')
+
+@mv_routes.route('/health')
+def health():
+    return {"status": "running"}
