@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template,Blueprint,jsonify,url_for
-import pyodbc
+
 from configparser import ConfigParser
 from string import Template
 from flask import session

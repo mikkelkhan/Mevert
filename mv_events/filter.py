@@ -1,6 +1,6 @@
 import random
 from flask import Flask, request, render_template,Blueprint,jsonify
-import pyodbc
+
 from configparser import ConfigParser
 from string import Template
 from flask import session

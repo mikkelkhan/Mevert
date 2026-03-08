@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template,Blueprint,jsonify
-import pyodbc
+
 from flask_socketio import join_room, emit
 from configparser import ConfigParser
 from string import Template
